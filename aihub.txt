@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All AI - Your Gateway to AI Tools</title>
+    <meta name="description" content="Access all popular AI tools in one place - ChatGPT, Claude, Perplexity, and many more. Your central hub for artificial intelligence platforms.">
+    <meta name="keywords" content="AI tools, ChatGPT, Claude, Perplexity, artificial intelligence, AI directory, AI platforms">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .logo {
+            font-size: 4rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #00f5ff, #ff00ff, #ffff00, #00ff00);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 3s ease-in-out infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .tagline {
+            font-size: 1.4rem;
+            color: #a0a0a0;
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            position: relative;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            font-size: 1.1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            color: white;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #00f5ff;
+            box-shadow: 0 0 20px rgba(0, 245, 255, 0.3);
+        }
+
+        .search-box::placeholder {
+            color: #888;
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+            font-size: 1.2rem;
+        }
+
+        .categories {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .category-btn {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .category-btn:hover, .category-btn.active {
+            background: rgba(0, 245, 255, 0.2);
+            border-color: #00f5ff;
+            transform: translateY(-2px);
+        }
+
+        .ai-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .ai-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .ai-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .ai-card:hover::before {
+            left: 100%;
+        }
+
+        .ai-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 245, 255, 0.15);
+            border-color: rgba(0, 245, 255, 0.3);
+        }
+
+        .ai-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #00f5ff, #ff00ff);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .ai-name {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+
+        .ai-category {
+            color: #00f5ff;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .ai-description {
+            color: #ccc;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+        }
+
+        .ai-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-tag {
+            background: rgba(0, 245, 255, 0.1);
+            border: 1px solid rgba(0, 245, 255, 0.3);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            color: #00f5ff;
+        }
+
+        .launch-btn {
+            background: linear-gradient(45deg, #00f5ff, #0080ff);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            width: 100%;
+        }
+
+        .launch-btn:hover {
+            background: linear-gradient(45deg, #0080ff, #00f5ff);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 128, 255, 0.3);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            margin: 3rem 0;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+        }
+
+        .stat-item h3 {
+            font-size: 2.5rem;
+            color: #00f5ff;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-item p {
+            color: #ccc;
+            font-size: 1rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 3rem;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2.5rem;
+            }
+            
+            .tagline {
+                font-size: 1.1rem;
+            }
+            
+            .ai-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    
+    <div class="container">
+        <header>
+            <h1 class="logo">All AI</h1>
+            <p class="tagline">Your Gateway to the World's Best AI Tools</p>
+            
+            <div class="search-container">
+                <input type="text" class="search-box" placeholder="Search AI tools..." id="searchBox">
+                <span class="search-icon">🔍</span>
+            </div>
+        </header>
+
+        <div class="categories">
+            <button class="category-btn active" data-category="all">All</button>
+            <button class="category-btn" data-category="chat">Chat AI</button>
+            <button class="category-btn" data-category="image">Image AI</button>
+            <button class="category-btn" data-category="code">Code AI</button>
+            <button class="category-btn" data-category="writing">Writing AI</button>
+            <button class="category-btn" data-category="research">Research</button>
+            <button class="category-btn" data-category="voice">Voice AI</button>
+        </div>
+
+        <div class="ai-grid" id="aiGrid">
+            <!-- Chat AI -->
+            <a href="https://chat.openai.com" target="_blank" class="ai-card" data-category="chat">
+                <div class="ai-icon">🤖</div>
+                <h3 class="ai-name">ChatGPT</h3>
+                <div class="ai-category">Chat AI</div>
+                <p class="ai-description">Advanced conversational AI by OpenAI. Chat, get answers, write content, and solve problems with GPT-4.</p>
+                <div class="ai-features">
+                    <span class="feature-tag">GPT-4</span>
+                    <span class="feature-tag">Plugins</span>
+                    <span class="feature-tag">Code</span>
+                </div>
+                <button class="launch-btn">Launch ChatGPT</button>
+            </a>
+
+            <a href="https://claude.ai" target="_blank" class="ai-card" data-category="chat">
+                <div class="ai-icon">🧠</div>
+                <h3 class="ai-name">Claude AI</h3>
+                <div class="ai-category">Chat AI</div>
+                <p class="ai-description">Anthropic's helpful, harmless, and honest AI assistant. Great for analysis, writing, and complex reasoning.</p>
+                <div class="ai-features">
+                    <span class="feature-tag">Claude 3</span>
+                    <span class="feature-tag">Analysis</span>
+                    <span class="feature-tag">Safety</span>
+                </div>
+                <button class="launch-btn">Launch Claude</button>
+            </a>
+
+            <a href="https://perplexity.ai" target="_blank" class="ai-card" data-category="research">
+                <div class="ai-icon">🔍</div>
+                <h3 class="ai-name">Perplexity</h3>
+                <div class="ai-category">Research</div>
+                <p class="ai-description">AI-powered search engine that provides accurate, real-time answers with sources and citations.</p>
+                <div class="ai-features">
+                    <span class="feature-tag">Search</span>
+                    <span class="feature-tag">Citations</span>
+                    <span class="feature-tag">Real-time</span>
+                </div>
+                <button class="launch-btn">Launch Perplexity</button>
+            </a>
+
+            <a href="https://bard.google.com" target="_blank" class="ai-card" data-category="chat">
+                <div class="ai-icon">✨</div>
+                <h3 class="ai-name">Google Bard</h3>
+                <div class="ai-category">Chat AI</div>
+                <p class="ai-description">Google's experimental conversational AI service powered by LaMDA and PaLM models.</p>
+                <div class="ai-features">
+                    <span class="feature-tag">PaLM</span>
+                    <span class="feature-tag">Google</span>
+                    <span class="feature-tag">Web Access</span>
+                </div>
+                <button class="launch-btn">Launch Bard</button>
+            </a>
+
+            <!-- Image AI -->
+            <a href="https://midjourney.com" target="_blank" class="ai-card" data-category="image">
+                <div class="ai-icon">🎨</div>
+                <h3 class="ai-name">Midjourney</h3>
+                <div class="ai-category">Image AI</div>
+                <p class="ai-description">Create stunning, artistic images from text descriptions using advanced AI image generation.</p>
+                <div class="ai-features">
+                    <span class="feature-tag">Art</span>
+                    <span class="feature-tag">Creative</span>
+                    <span class="feature-tag">Discord</span>
+                </div>
+                <button class="launch-btn">Launch Midjourney</button>
+            </a>
+
+            <a href="https://openai.com/dall-e-2" target="_blank" class="ai-card" data-category="image">
+                <div class="ai-icon">🖼️</div>
+                <h3 class="ai-name">DALL-E 2</h3>
+                <div class="ai-category">Image AI</div>
+                <p class="ai-description">Create realistic images and art from natural language descriptions by OpenAI.</p>
+                <div class="ai-features">
+                    <span class="feature-tag">OpenAI</span>
+                    <span class="feature-tag">Realistic</span>
+                    <span class="feature-tag">Edit</span>
+                </div>
+                <button class="launch-btn">Launch DALL-E</button>
+            </a>
+
+            <a href="https://stability.ai" target="_blank" class="ai-card" data-category="image">
+                <div class="ai-icon">🌟</div>
+                <h3 class="ai-name">Stable Diffusion</h3>
+                <div class="ai-category">Image AI</div>
+                <p class="ai-description">Open-source deep learning text-to-image model for generating detailed images.</p>
+                <div class="ai-features">
+                    <span class="feature-tag">Open Source</span>
+                    <span class="feature-tag">Customizable</span>
+                    <span class="feature-tag">Local</span>
+                </div>
+                <button class="launch-btn">Launch Stable AI</button>
+            </a>
+
+            <!-- Code AI -->
+            <a href="https://github.com/features/copilot" target="_blank" class="ai-card" data-category="code">
+                <div class="ai-icon">💻</div>
+                <h3 class="ai-name">GitHub Copilot</h3>
+                <div class="ai-category">Code AI</div>
+                <p class="ai-description">AI pair programmer that helps you write code faster with whole line & function suggestions.</p>
+                <div class="ai-features">
+                    <span class="feature-tag">GitHub</span>
+                    <span class="feature-tag">VS Code</span>
+                    <span class="feature-tag">Autocomplete</span>
+                </div>
+                <button class="launch-btn">Launch Copilot</button>
+            </a>
+
+            <a href="https://replit.com" target="_blank" class="ai-card" data-category="code">
+                <div class="ai-icon">⚡</div>
+                <h3 class="ai-name">Replit</h3>
+                <div class="ai-category">Code AI</div>
+                <p class="ai-description">Online IDE with AI-powered coding assistance and collaborative development environment.</p>
+                <div class="ai-features">
+                    <span class="feature-tag">IDE</span>
+                    <span class="feature-tag">Collaborative</span>
+                    <span class="feature-tag">Deploy</span>
+                </div>
+                <button class="launch-btn">Launch Replit</button>
+            </a>
+
+            <!-- Writing AI -->
+            <a href="https://jasper.ai" target="_blank" class="ai-card" data-category="writing">
+                <div class="ai-icon">✍️</div>
+                <h3 class="ai-name">Jasper AI</h3>
+                <div class="ai-category">Writing AI</div>
+                <p class="ai-description">AI writing assistant for marketing copy, blog posts, emails, and creative content.</p>
+                <div class="ai-features">
+                    <span class="feature-tag">Marketing</span>
+                    <span class="feature-tag">Blog</span>
+                    <span class="feature-tag">Templates</span>
+                </div>
+                <button class="launch-btn">Launch Jasper</button>
+            </a>
+
+            <a href="https://copy.ai" target="_blank" class="ai-card" data-category="writing">
+                <div class="ai-icon">📝</div>
+                <h3 class="ai-name">Copy.ai</h3>
+                <div class="ai-category">Writing AI</div>
+                <p class="ai-description">Generate marketing copy, product descriptions, and creative content with AI assistance.</p>
+                <div class="ai-features">
+                    <span class="feature-tag">Copy</span>
+                    <span class="feature-tag">Marketing</span>
+                    <span class="feature-tag">Templates</span>
+                </div>
+                <button class="launch-btn">Launch Copy.ai</button>
+            </a>
+
+            <!-- Voice AI -->
+            <a href="https://murf.ai" target="_blank" class="ai-card" data-category="voice">
+                <div class="ai-icon">🎤</div>
+                <h3 class="ai-name">Murf AI</h3>
+                <div class="ai-category">Voice AI</div>
+                <p class="ai-description">Generate realistic voiceovers in multiple languages with AI-powered text-to-speech.</p>
+                <div class="ai-features">
+                    <span class="feature-tag">Voice</span>
+                    <span class="feature-tag">Multiple Languages</span>
+                    <span class="feature-tag">Realistic</span>
+                </div>
+                <button class="launch-btn">Launch Murf</button>
+            </a>
+
+            <a href="https://elevenlabs.io" target="_blank" class="ai-card" data-category="voice">
+                <div class="ai-icon">🔊</div>
+                <h3 class="ai-name">ElevenLabs</h3>
+                <div class="ai-category">Voice AI</div>
+                <p class="ai-description">Advanced AI voice generator with voice cloning and multilingual support.</p>
+                <div class="ai-features">
+                    <span class="feature-tag">Voice Clone</span>
+                    <span class="feature-tag">Multilingual</span>
+                    <span class="feature-tag">High Quality</span>
+                </div>
+                <button class="launch-btn">Launch ElevenLabs</button>
+            </a>
+
+            <!-- Research -->
+            <a href="https://www.semanticscholar.org" target="_blank" class="ai-card" data-category="research">
+                <div class="ai-icon">📚</div>
+                <h3 class="ai-name">Semantic Scholar</h3>
+                <div class="ai-category">Research</div>
+                <p class="ai-description">AI-powered research tool for scientific literature with smart filtering and insights.</p>
+                <div class="ai-features">
+                    <span class="feature-tag">Academic</span>
+                    <span class="feature-tag">Citations</span>
+                    <span class="feature-tag">Research</span>
+                </div>
+                <button class="launch-btn">Launch Scholar</button>
+            </a>
+
+            <a href="https://consensus.app" target="_blank" class="ai-card" data-category="research">
+                <div class="ai-icon">🔬</div>
+                <h3 class="ai-name">Consensus</h3>
+                <div class="ai-category">Research</div>
+                <p class="ai-description">Search engine that uses AI to extract insights from scientific research papers.</p>
+                <div class="ai-features">
+                    <span class="feature-tag">Science</span>
+                    <span class="feature-tag">Evidence</span>
+                    <span class="feature-tag">Insights</span>
+                </div>
+                <button class="launch-btn">Launch Consensus</button>
+            </a>
+        </div>
+
+        <div class="stats">
+            <div class="stat-item">
+                <h3 id="toolCount">16</h3>
+                <p>AI Tools</p>
+            </div>
+            <div class="stat-item">
+                <h3>6</h3>
+                <p>Categories</p>
+            </div>
+            <div class="stat-item">
+                <h3>∞</h3>
+                <p>Possibilities</p>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 All AI Directory. Your gateway to artificial intelligence tools worldwide.</p>
+            <p>Bookmark this page for quick access to all your favorite AI platforms!</p>
+        </footer>
+    </div>
+
+    <script>
+        // Create animated stars
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const starCount = 100;
+
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Search functionality
+        function setupSearch() {
+            const searchBox = document.getElementById('searchBox');
+            const aiCards = document.querySelectorAll('.ai-card');
+
+            searchBox.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                
+                aiCards.forEach(card => {
+                    const name = card.querySelector('.ai-name').textContent.toLowerCase();
+                    const description = card.querySelector('.ai-description').textContent.toLowerCase();
+                    const category = card.querySelector('.ai-category').textContent.toLowerCase();
+                    
+                    if (name.includes(searchTerm) || description.includes(searchTerm) || category.includes(searchTerm)) {
+                        card.style.display = 'block';
+                        card.style.animation = 'fadeInUp 0.5s ease-out';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                
+                updateToolCount();
+            });
+        }
+
+        // Category filtering
+        function setupCategoryFilter() {
+            const categoryBtns = document.querySelectorAll('.category-btn');
+            const aiCards = document.querySelectorAll('.ai-card');
+
+            categoryBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Update active button
+                    categoryBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    const selectedCategory = btn.dataset.category;
+
+                    aiCards.forEach(card => {
+                        if (selectedCategory === 'all' || card.dataset.category === selectedCategory) {
+                            card.style.display = 'block';
+                            card.style.animation = 'fadeInUp 0.5s ease-out';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                    
+                    updateToolCount();
+                });
+            });
+        }
+
+        // Update tool count
+        function updateToolCount() {
+            const visibleCards = document.querySelectorAll('.ai-card:not([style*="display: none"])');
+            document.getElementById('toolCount').textContent = visibleCards.length;
+        }
+
+        // Add click tracking for analytics (you can integrate with Google Analytics)
+        function trackClick(toolName) {
+            console.log(`User clicked on: ${toolName}`);
+            // Add your analytics tracking code here
+        }
+
+        
+        function setupClickTracking() {
+            const aiCards = document.querySelectorAll('.ai-card');
+            aiCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const toolName = card.querySelector('.ai-name').textContent;
+                    trackClick(toolName);
+                });
+            });
+        }
+
+       
+        function animateCards() {
+            const aiCards = document.querySelectorAll('.ai-card');
+            aiCards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            createStars();
+            setupSearch();
+            setupCategoryFilter();
+            setupClickTracking();
+            animateCards();
+            updateToolCount();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === '/' && e.target.tagName !== 'INPUT') {
+                e.preventDefault();
+                document.getElementById('searchBox').focus();
+            }
+        });
+
+        document.documentElement.style.scrollBehavior = 'smooth';
+    </script>
+</body>
+</html>
